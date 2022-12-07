@@ -406,15 +406,20 @@ class Game
     }
 
     renderPause() {
-        this.context.fillStyle = '#bec8d5';
-        this.context.font = '600 1.25rem Nunito';
+        this.context.fillStyle = '#344267';
         const x = (this.config.width / 2);
         const y = (this.config.height / 2);
-        const text = 'Click or press [Space] to start';
-        const measurement = this.context.measureText(text);
-        this.context.fillRect(x - 20, y - 64, 30, 64);
-        this.context.fillRect(x + 20, y - 64, 30, 64);
-        this.context.fillText(text, x - (measurement.width / 2), y + 40);
+        this.context.fillRect(x - 26, y - 68, 26, 68);
+        this.context.fillRect(x + 13, y - 68, 26, 68);
+
+        this.context.fillStyle = '#b9c0cb';
+        this.context.font = '700 1.15rem Nunito';
+        let text = 'SPACE to start/pause';
+        let measurement = this.context.measureText(text);
+        this.context.fillText(text, x - (measurement.width / 2), y + 64);
+        text = 'ARROW or WASD keys to move';
+        measurement = this.context.measureText(text);
+        this.context.fillText(text, x - (measurement.width / 2), y + 96);
     }
 }
 
@@ -425,7 +430,7 @@ window.addEventListener('load', () => {
         height: document.body.clientWidth,
         refreshDelay: 100,
         gridCellCount: 30,
-        snakeStartingLength: 10,
+        snakeStartingLength: 5,
         foodSpawnMultiplier: 2,
         foodExpirationMultiplier: 1,
     });
@@ -448,5 +453,7 @@ window.addEventListener('load', () => {
         }
     });
 
-    game.render();
+    document.fonts.ready.then(() => {
+        game.render();
+    });
 });
