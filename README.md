@@ -1,1 +1,1 @@
-[Play](https://jeroenvanderlaan.github.io/)
+[Play Snake](https://jeroenvanderlaan.github.io/)

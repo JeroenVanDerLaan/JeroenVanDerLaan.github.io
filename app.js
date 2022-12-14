@@ -26,7 +26,7 @@ class Grid
     #cells = [];
 
     constructor(
-        size = 30,
+        size = 20,
     ) {
         this.#dimensions = {width: size, height: size};
         for (let y = 0; y < size; y++) {
@@ -185,7 +185,7 @@ class Game
     constructor(canvas) {
         this.#canvas = canvas;
         this.#context = canvas.getContext('2d');
-        this.#grid = new Grid();
+        this.#grid = new Grid(24);
         this.#snake = new Snake();
     }
 
@@ -313,13 +313,13 @@ class Game
 
 window.addEventListener('load', () => {
     const canvas = document.getElementById('canvas');
-    const help = document.getElementById('help');
+    const menu = document.getElementById('menu');
     const game = new Game(canvas);
 
     window.addEventListener('keydown', (event) => {
         if (event.key === ' ') {
             false === game.running ? game.start() : game.stop();
-            help.style.display = game.running ? 'none' : 'flex';
+            menu.style.display = game.running ? 'none' : 'flex';
         } else if (event.key === 'w' || event.key === 'ArrowUp') {
             game.direction = game.direction !== 'down' ? 'up' : game.direction;
         } else if (event.key === 's' || event.key === 'ArrowDown') {
@@ -330,43 +330,39 @@ window.addEventListener('load', () => {
             game.direction = game.direction !== 'left' ? 'right' : game.direction;
         }
     });
-    window.addEventListener('touchstart', () => {
-        false === game.running ? game.start() : game.stop();
-        help.style.display = game.running ? 'none' : 'flex';
+
+    menu.addEventListener('click', () => {
+        game.start();
+        menu.style.display = 'none';
     });
 
-    // let touch = {x: 0, y: 0};
-    // window.addEventListener('touchstart', (event) => {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //     if (false === game.running) {
-    //         // game.start();
-    //         touch.x = event.touches.item(0).clientX;
-    //         touch.y = event.touches.item(0).clientY;
-    //     }
-    // });
-    // window.addEventListener('touchend', (event) => {
-    //     event.preventDefault();
-    //     event.stopPropagation();
-    //     if (true === game.running) {
-    //         // game.stop();
-    //     }
-    // });
-    // window.addEventListener('touchmove', (event) => {
-    //     const position = {
-    //         x: event.touches.item(0).clientX,
-    //         y: event.touches.item(0).clientY,
-    //     };
-    //     const distance = {
-    //         x: touch.x - position.x,
-    //         y: touch.y - position.y,
-    //     };
-    //     touch = position;
-    // });
+    menu.addEventListener('touchstart', () => {
+        game.start();
+        menu.style.display = 'none';
+    });
+
+    const touch = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2
+    };
+    window.addEventListener('touchstart', (event) => {
+        if (false === game.running) {
+            return;
+        }
+        const y = event.touches.item(0).clientY;
+        const x = event.touches.item(0).clientX;
+        if (game.direction === 'left' || game.direction === 'right') {
+            game.direction = y < touch.y ? 'up' : 'down';
+        } else {
+            game.direction = x < touch.x ? 'left' : 'right';
+        }
+        touch.x = x;
+        touch.y = y;
+    });
 
     function render() {
-        const size = document.body.clientWidth < document.body.clientHeight ?
-            document.body.clientWidth - 30 : document.body.clientHeight - 100;
+        const size = window.innerWidth < window.innerHeight ?
+            window.innerWidth - 24 : window.innerHeight - 300;
         canvas.width = size;
         canvas.height = size;
         game.render();

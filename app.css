@@ -16,27 +16,37 @@ html, body {
     flex-wrap: nowrap;
     flex-grow: 1;
     flex-shrink: 0;
-    height: 100vh;
     width: 100vw;
+    height: 100vh;
     background-color: white;
-    font-family: arial, serif;
 }
 
-canvas {
-    border: 1px solid black;
+#canvas {
+    border: 4px solid #1d771d;
 }
 
-#help {
+#menu {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     align-content: normal;
     position: fixed;
-    height: 100vh;
     width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.4);
+    font-family: arial, serif;
+    color: black;
+    text-align: center;
 }
-#help > span {
-    margin-top: 20px;
+
+#menu > span:first-child {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+#menu > span:last-child {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    opacity: 0.5;
 }
